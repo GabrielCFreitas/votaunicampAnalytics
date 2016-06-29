@@ -1,6 +1,6 @@
 ---
 title: "Vota Unicamp!"
-author: "Benilton S Carvalho"
+author: "Gabriel Carvalho Freitas 155421 ..."
 output: html_document
 ---
 
@@ -76,3 +76,76 @@ colnames(ics) = c("lower", "upper")
 mytbl$p = p
 mytbl = cbind(mytbl, ics)
 ```
+
+## Comparações
+
+Existe um pensamento de que a opinião dos alunos de exatas difere dos alunos que não estão em um curso de exatas. Devido a isso, resolvemos separar nossos dados entre dois outros conjuntos de dados, um com os alunos que não são de exatas e outro somente com os alunos de exatas.
+
+```{r exatas_naoexatas}
+NaoExatas = subset(mytbl, codigo == 26 | codigo == 25 | codigo == 64 | codigo == 23 | codigo == 22 | codigo == 6 |
+                     codigo == 100 | codigo == 27 | codigo == 45 | codigo == 21 | codigo == 63 | codigo == 58 |
+                     codigo == 46 | codigo == 15 | codigo == 107 | codigo == 14 |
+                     codigo == 109 | codigo == 110 | codigo == 17 | codigo == 47 |
+                     codigo == 16 | codigo == 44 | codigo == 75 | codigo == 30 | codigo == 54 | codigo == 55 |
+                     codigo == 19 | codigo == 7 | codigo == 57 | codigo == 56 | codigo == 18 | codigo == 20 | codigo == 38)
+
+
+Exatas = subset(mytbl, codigo != 26 & codigo != 25 & codigo != 64 & codigo != 23 & codigo != 22 & codigo != 6 &
+                   codigo != 100 & codigo != 27 & codigo != 45 & codigo != 21 & codigo != 63 & codigo != 58 &
+                     codigo != 46 & codigo != 15 & codigo != 107 & codigo != 14 &
+                     codigo != 109 & codigo != 110 & codigo != 17 & codigo != 47 &
+                     codigo != 16 & codigo != 44 & codigo != 75 & codigo != 30 & codigo != 54 & codigo != 55 &
+                     codigo != 19 & codigo != 7 & codigo != 57 & codigo != 56 & codigo != 18 & codigo != 20 & codigo != 38)
+```
+
+Podemos ver que de fato as proporções são diferentes: 
+
+```{r prop_exatas_naoexatas}
+props = c(p_NaoExatas = sum(NaoExatas$nao)/sum(NaoExatas$total),
+p_Exatas = sum(Exatas$nao)/sum(Exatas$total))
+names(props) = c("Não Exatas", "Exatas")
+props
+```
+
+Mas precisamos formalizar isso, usando um teste de hipótese, onde temos como hipótese nula "As proporções são iguais" e hipótese alternativa "As proporções são diferentes". O nível de significância escolhido será de $\alpha = 0.01$. Temos então o seguinte teste:
+
+```{r teste_dif_exatas}
+x = c(rep(1,sum(Exatas$nao)), rep(0,sum(Exatas$total)-sum(Exatas$nao)))
+y = c(rep(1,sum(NaoExatas$nao)), rep(0,sum(NaoExatas$total)-sum(NaoExatas$nao)))
+
+(teste_dif_exatas_nao_exatas = t.test(x,y))
+```
+
+Como temos um valor-p muito baixo, ou seja, menor que o nível de significância escolhido, rejeitamos a hipótese de que as proporções são iguais, confirmando assim o que já era esperado anteriormente. 
+
+## Tamanho amostral
+
+## Institutos
+
+```{r insti}
+IMECC = subset(mytbl,codigo=="1"|codigo=="2"|codigo=="28"|codigo=="29"|codigo=="51"|codigo=="31"|codigo=="79")
+FEM = subset(mytbl,codigo=="10"|codigo=="49"|codigo=="98"|codigo=='60'|codigo=='92'|codigo=='72'|codigo=="39")
+FCA = subset(mytbl,codigo=="100"|codigo=="107"|codigo=="101"|codigo=="102"|codigo=="33"|codigo=="54"|codigo=="91"|codigo=="52")
+IFGW = subset(mytbl,codigo=="4"|codigo=="108"|codigo=="40"|codigo=="54")
+IFCH = subset(mytbl,codigo=="19"|codigo=="30"|codigo=="44"|codigo=="16"|codigo=="28"|codigo=="25"|codigo=="66"|codigo=="94"|codigo=="74"|codigo=="69"|codigo=="103"|codigo=="27"|codigo=="36"|codigo=="37"|codigo=="75"|codigo=="24"|codigo=="80"|codigo=="38")
+FEEC = subset(mytbl,codigo=="11"|codigo=="41"|codigo=="34"|codigo=="61")
+FEC = subset(mytbl,codigo=="12"|codigo=="32"|codigo=="62"|codigo=="89")
+FOP = subset(mytbl,codigo=="14"|codigo=="16"|codigo=="73"|codigo=="20"|codigo=="19"|codigo=="64"|codigo=="18"|codigo=="67"|codigo=="23"|codigo=="71"|codigo=="70"|codigo=="69")
+FEA = subset(mytbl,codigo=="13"|codigo=="43"|codigo=="81"|codigo=="34"|codigo=="6"|codigo=="7"|codigo=="5"|codigo=="47"|codigo=="56"|codigo=="57"|codigo=="55")
+FCM = subset(mytbl,codigo=="15"|codigo=="21"|codigo=="58"|codigo=="89"|codigo=="8"|codigo=="75"|codigo=="97"|codigo=="23"|codigo=="104"|codigo=="90"|codigo=="87"|codigo=="36"|codigo=="91"|codigo=="100"|codigo=="49"|codigo=="58"|codigo=="35"|codigo=="42"|codigo=="74"|codigo=="51"|codigo=="50"|codigo=="44"|codigo=="90"|codigo=="48"|codigo=="59")
+IE = subset(mytbl,codigo=="17"|codigo=="47"|codigo=="21"|codigo=="67"|codigo=="53")
+IEL = subset(mytbl,codigo=="7"|codigo=="57"|codigo=="18"|codigo=="75"|codigo=="68"|codigo=="93"|codigo=="57"|codigo=="81"|codigo=="40")
+IA = subset(mytbl,codigo=="26"|codigo=="25"|codigo=="64"|codigo=="23"|codigo=="22"|codigo=="105"|codigo=="106"|codigo=="2"|codigo=="22"|codigo=="83"|codigo=="65"|codigo=="61"|codigo=="60"|codigo=="63"|codigo=="62")
+FEF =subset(mytbl,codigo=="27"|codigo=="45"|codigo=="78"|codigo=="28")
+IC= subset(mytbl,codigo=="42"|codigo=="53"|codigo=="3"|codigo=="35")
+FEQ = subset(mytbl,codigo=="39"|codigo=="9"|codigo=="59")
+IB = subset(mytbl,codigo=="6"|codigo=="46"|codigo=="101"|codigo=="14"|codigo=="10"|codigo=="9"|codigo=="12"|codigo=="13"|codigo=="11")
+IQ = subset(mytbl, codigo=="5"|codigo=="50"|codigo=="55")
+IG = subset(mytbl,codigo=="53"|codigo=="54"|codigo=="55"|codigo=="26"|codigo=="76"|codigo=="24"|codigo=="95"|codigo=="79"|codigo=="41")
+FEAGRI = subset(mytbl, codigo=="8"|codigo=="58")
+FE = subset(mytbl,codigo=="20"|codigo=="38"|codigo=="70"|codigo=="102"|codigo=="86")
+PROFIS = subset(mytbl, codigo=="200")
+
+Institutos 
+```
+
